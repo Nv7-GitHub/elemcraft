@@ -21,5 +21,7 @@ import Element from "./Element.svelte";
 
     display: flex;
     flex-direction: column;
+
+    transition-duration: 0.1s;
   }
 </style>

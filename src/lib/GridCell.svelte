@@ -1,16 +1,19 @@
 <script lang="ts">
-  import { picked } from "./data";
+  import { COLS, picked, recipe, ROWS } from "./data";
   import Element from "./Element.svelte";
-  import { scale, slide } from "svelte/transition";
+  import { scale } from "svelte/transition";
 
-  let id = -1;
+  export let row: number;
+  export let col: number;
 
   function choose() {
-    if (id >= 0) {
+    if ($recipe[row][col] >= 0) {
       // Already picked, remove
-      id = -1;
+      $recipe[row][col] = -1;
+      recipe.set($recipe);
     } else {
-      id = $picked;
+      $recipe[row][col] = $picked;
+      recipe.set($recipe);
       picked.set(-1);
     }
   }
@@ -19,9 +22,9 @@
 </script>
 
 <div class="cell" on:click={choose} in:transition out:transition>
-  {#if id >= 0}
+  {#if row < $ROWS && col < $COLS && $recipe[row][col] >= 0}
     <div in:scale out:scale class="container">
-      <Element id={id}></Element>
+      <Element id={$recipe[row][col]}></Element>
     </div>
   {/if}
 </div>

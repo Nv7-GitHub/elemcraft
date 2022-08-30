@@ -3,9 +3,7 @@
 
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
-
-  let WIDTH = 5;
-  let HEIGHT = 5;
+  import { COLS, make_picked, recipe, ROWS } from "./data";
 
   // slide but horizontal
   function horizontalSlide(node: HTMLElement, { delay = 0, duration = 400, easing: easing$1 = cubicOut } = {}) {
@@ -35,14 +33,34 @@
   }
 
   let transition: any = slide;
+
+  // https://dev.to/samanthaming/how-to-deep-clone-an-array-in-javascript-3cig
+  const clone = (items: any[]): any[] => items.map(item => Array.isArray(item) ? clone(item) : item);
+
+  $: if ($recipe.length != $ROWS || $recipe[0].length != $COLS) {
+    let old: number[][] = $recipe;
+    recipe.set(make_picked());
+
+    // Copy old state
+    if (old) {
+      for (let r = 0; r < $ROWS; r++) {
+        for (let c = 0; c < $COLS; c++) {
+          if (old[r] && old[r][c] >= 0) {
+            $recipe[r][c] = old[r][c];
+          }
+        }
+      }
+      recipe.set($recipe); 
+    }
+  }
 </script>
 
 <div class="workspace">
   <div class="grid">
-    {#each {length: HEIGHT} as _}
+    {#each {length: $ROWS} as _, r}
       <div class="row">
-        {#each {length: WIDTH} as _}
-          <GridCell transition={transition}></GridCell>
+        {#each {length: $COLS} as _, c}
+          <GridCell transition={transition} row={r} col={c}></GridCell>
         {/each}
       </div>
     {/each}
@@ -52,11 +70,11 @@
 <div class="config">
   <div class="input-row">
     <span class="text">Width</span>
-    <input type="range" min="2" max="7" bind:value={WIDTH} on:focus={() => {transition = horizontalSlide}}/>
+    <input type="range" min="2" max="7" step="1" bind:value={$COLS} on:focus={() => {transition = horizontalSlide}}/>
   </div>
   <div class="input-row">
     <span class="text">Height</span>
-    <input type="range" min="2" max="7" bind:value={HEIGHT} on:focus={() => {transition = slide}}/>
+    <input type="range" min="2" max="7" step="1" bind:value={$ROWS} on:focus={() => {transition = slide}}/>
   </div>
 </div>
 
