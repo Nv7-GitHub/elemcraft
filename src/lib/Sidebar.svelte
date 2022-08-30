@@ -1,11 +1,14 @@
 <script>
-import { elements } from "./data";
+import { inv } from "./data";
 import Element from "./Element.svelte";
+import { scale } from "svelte/transition";
 
 </script>
 <div class="sidebar">
-  {#each elements as _, id}
-    <Element id={id}></Element>
+  {#each $inv as id}
+    <div in:scale>
+      <Element id={id}></Element>
+    </div>
   {/each}
 </div>
 

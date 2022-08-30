@@ -32,6 +32,16 @@ export const elements: Element[] = [
     name: 'Mud',
     color: 'rgb(109, 78, 43)',
   },
+  {
+    id: 5,
+    name: 'Wind',
+    color: "rgb(84, 179, 227)",
+  },
+  {
+    id: 6,
+    name: 'Dust',
+    color: "rgb(168, 168, 168)",
+  }
 ]
 
 type Recipe = {
@@ -47,12 +57,31 @@ export const recipes: Recipe[] = [
     ],
     result: 4
   },
+  {
+    recipe: [
+      [0, 0],
+      [2, 2]
+    ],
+    result: 5,
+  },
+  {
+    recipe: [
+      [1, 5, 5],
+      [1, 1, 5],
+      [1, 1, 1],
+    ],
+    result: 6,
+  },
 ];
 
+export let inv = writable([0, 1, 2, 3]);
 export let picked = writable(-1);
 export let recipe: Writable<number[][]> = writable([[-1]]);
 export let ROWS = writable(5);
 export let COLS = writable(5);
+
+let $inv: number[];
+inv.subscribe(v => {$inv = v})
 
 // Utility
 let $ROWS: number;
@@ -87,9 +116,9 @@ function cmp_recipes(a: number[][], b: number[][]): boolean {
 recipe.subscribe((v) => {
   for (let r of recipes) {
     if (cmp_recipes(v, r.recipe)) {
-      let newv = make_picked();
-      newv[newv.length/2][newv[0].length/2] = r.result;
-      recipe.set(newv);
+      recipe.set(make_picked());
+      $inv.push(r.result);
+      inv.set($inv);
     }
   }
 })
