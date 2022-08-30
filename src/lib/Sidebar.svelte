@@ -3,7 +3,10 @@ import Element from "./Element.svelte";
 
 </script>
 <div class="sidebar">
-  <Element name="Air"></Element>
+  <Element name="Air" color="00ffff"></Element>
+  <Element name="Earth" color="964b00"></Element>
+  <Element name="Fire" color="ffa500"></Element>
+  <Element name="Water" color="0000ff"></Element>
 </div>
 
 <style>
