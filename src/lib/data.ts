@@ -10,22 +10,22 @@ export const elements: Element[] = [
   {
     id: 0,
     name: 'Air',
-    color: '#eaeaea',
+    color: 'rgb(84, 179, 227)',
   },
   {
     id: 1,
     name: 'Earth',
-    color: '#eaeaea',
+    color: 'rgb(109, 78, 43)',
   },
   {
     id: 2,
     name: 'Fire',
-    color: '#eaeaea',
+    color: 'rgb(227, 132, 84)',
   },
   {
     id: 3,
     name: 'Water',
-    color: '#eaeaea',
+    color: 'rgb(84, 117, 227)',
   }
 ]
 
