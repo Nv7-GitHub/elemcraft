@@ -1,22 +1,23 @@
 <script>
+import { elements } from "./data";
 import Element from "./Element.svelte";
 
 </script>
 <div class="sidebar">
-  <Element name="Air" color="00ffff"></Element>
-  <Element name="Earth" color="964b00"></Element>
-  <Element name="Fire" color="ffa500"></Element>
-  <Element name="Water" color="0000ff"></Element>
+  {#each elements as _, id}
+    <Element id={id}></Element>
+  {/each}
 </div>
 
 <style>
   .sidebar {
     position: absolute;
-    right: 0;
+    left: 0;
     top: 0;
     bottom: 0;
     width: 10vh;
     background-color: #ffffff;
+    overflow-y: scroll;
 
     display: flex;
     flex-direction: column;

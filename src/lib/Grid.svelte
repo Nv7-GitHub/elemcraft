@@ -22,7 +22,7 @@ import GridCell from "./GridCell.svelte";
     background-color: #fafafa;
     width: calc(100vw - 10vh);
     position: absolute;
-    left: 0;
+    right: 0;
     top: 0;
     height: 100vh;
     display: flex;
