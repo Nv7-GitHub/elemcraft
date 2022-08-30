@@ -1,7 +1,7 @@
 <script lang="ts">
   import { picked } from "./data";
   import Element from "./Element.svelte";
-  import { scale } from "svelte/transition";
+  import { scale, slide } from "svelte/transition";
 
   let id = -1;
 
@@ -14,9 +14,11 @@
       picked.set(-1);
     }
   }
+
+  export let transition: any;
 </script>
 
-<div class="cell" on:click={choose}>
+<div class="cell" on:click={choose} in:transition out:transition>
   {#if id >= 0}
     <div in:scale out:scale class="container">
       <Element id={id}></Element>
