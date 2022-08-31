@@ -76,6 +76,7 @@
     <span class="text">Height</span>
     <input type="range" min="2" max="7" step="1" bind:value={$ROWS} on:focus={() => {transition = slide}}/>
   </div>
+  <a href="https://github.com/Nv7-GitHub/elemcraft">Github Repo</a>
 </div>
 
 <style>
