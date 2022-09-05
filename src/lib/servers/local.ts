@@ -1,4 +1,4 @@
-import type { Element, Result, Server } from "$lib/servers";
+import type { Element, Result, Server, UI } from "$lib/servers";
 
 function cmp_recipes(a: number[][], b: number[][]): boolean {
   if (a.length != b.length) {
@@ -25,7 +25,7 @@ const elements: Element[] = [
     name: 'Air',
     color: 0x5eb2e3,
     description: 'A gas that is invisible and odorless.',
-    creator: 'You',
+    creator: 'Nv7',
     created: 0,
   },
   {
@@ -33,7 +33,7 @@ const elements: Element[] = [
     name: 'Earth',
     color: 0x6d4e2b,
     description: 'A solid that is made of minerals.',
-    creator: 'You',
+    creator: 'Nv7',
     created: 0,
   },
   {
@@ -41,7 +41,7 @@ const elements: Element[] = [
     name: 'Fire',
     color: 0xe38454,
     description: 'A gas that is hot and can burn.',
-    creator: 'You',
+    creator: 'Nv7',
     created: 0,
   },
   {
@@ -49,31 +49,7 @@ const elements: Element[] = [
     name: 'Water',
     color: 0x5475e3,
     description: 'A liquid that is clear and can be wet.',
-    creator: 'You',
-    created: 0,
-  },
-  {
-    id: 4,
-    name: 'Mud',
-    color: 0x6d4e2b,
-    description: 'A solid that is made of minerals and water.',
-    creator: 'You',
-    created: 0,
-  },
-  {
-    id: 5,
-    name: 'Wind',
-    color: 0x54b3e3,
-    description: 'A gas that is invisible and can move things.',
-    creator: 'You',
-    created: 0,
-  },
-  {
-    id: 6,
-    name: 'Dust',
-    color: 0xa8a8a8,
-    description: 'A solid that is made of minerals and air.',
-    creator: 'You',
+    creator: 'Nv7',
     created: 0,
   }
 ]
@@ -83,33 +59,11 @@ type Recipe = {
   result: number,
 }
 
-const recipes: Recipe[] = [
-  {
-    recipe: [
-      [3, 3],
-      [1, 1]
-    ],
-    result: 4
-  },
-  {
-    recipe: [
-      [0, 0],
-      [2, 2]
-    ],
-    result: 5,
-  },
-  {
-    recipe: [
-      [1, 5, 5],
-      [1, 1, 5],
-      [1, 1, 1],
-    ],
-    result: 6,
-  },
-];
+const recipes: Recipe[] = [];
 
 export class LocalServer implements Server {
   inv = [0, 1, 2, 3];
+  username = "";
 
   name(): string {
     return "Local Server";
@@ -148,6 +102,15 @@ export class LocalServer implements Server {
   }
 
   async creator(): Promise<string> {
-    return "You";
+    return this.username;
   }
+
+  async connect(ui: UI): Promise<void> {
+    const res = await ui.prompt("Username", ["Username..."], ["Connect"]);
+    this.username = res.values[0];
+  }
+}
+
+function sleep(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }

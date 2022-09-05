@@ -1,6 +1,8 @@
+import { browser } from "$app/environment";
 import { writable, type Writable } from "svelte/store"
 import type { Server } from "./servers";
 import { LocalServer } from "./servers/local";
+import { connected, ConnectUI } from "./ui";
 
 let $server: Server = new LocalServer();
 export let server: Writable<Server> = writable($server);
@@ -9,6 +11,12 @@ export let picked = writable(-1);
 export let recipe: Writable<number[][]> = writable([[-1]]);
 export let ROWS = writable(5);
 export let COLS = writable(5);
+
+export async function connect() {
+  connected.set(false);
+  await $server.connect(new ConnectUI());
+  connected.set(true);
+}
 
 let $inv: number[];
 inv.subscribe(v => {$inv = v})
@@ -34,3 +42,7 @@ recipe.subscribe(async (v) => {
     recipe.set(make_picked());
   }
 })
+
+if (browser) {
+  connect();
+}
