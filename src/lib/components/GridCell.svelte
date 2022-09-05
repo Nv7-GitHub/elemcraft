@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { COLS, picked, recipe, ROWS } from "./data";
+  import { COLS, picked, recipe, ROWS } from "../data";
   import Element from "./Element.svelte";
   import { scale } from "svelte/transition";
 

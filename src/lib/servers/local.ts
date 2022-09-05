@@ -137,6 +137,9 @@ export class LocalServer implements Server {
   }
 
   async suggest(recipe: number[][], res: Element): Promise<void> {
-    throw new Error("Method not implemented.");
+    res.id = elements.length;
+    elements.push(res);
+    recipes.push({ recipe, result: res.id });
+    this.inv.push(res.id);
   }
 }

@@ -3,7 +3,8 @@
 
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
-  import { COLS, make_picked, recipe, ROWS } from "./data";
+  import { COLS, make_picked, recipe, ROWS } from "../data";
+import { suggest_open } from "./suggest";
 
   // slide but horizontal
   function horizontalSlide(node: HTMLElement, { delay = 0, duration = 400, easing: easing$1 = cubicOut } = {}) {
@@ -76,6 +77,9 @@
     <span class="text">Height</span>
     <input type="range" min="2" max="7" step="1" bind:value={$ROWS} on:focus={() => {transition = slide}}/>
   </div>
+  {#if $recipe.some(row => row.some(v => v >= 0))}
+    <button class="suggest" in:slide out:slide on:click={() => {suggest_open.set(true)}}>Suggest</button>
+  {/if}
 </div>
 
 <style>
@@ -114,10 +118,30 @@
     display: flex;
     flex-direction: column;
     align-items: end;
+    background-color: #fff;
+    padding-top: 1vh;
+    padding-left: 1vh;
   }
 
   .text {
     font-family: Arial, Helvetica, sans-serif;
     margin-right: 5px;
+  }
+
+  .suggest {
+    background-color: transparent;
+    width: 100%;
+    border: none;
+    height: 10vh;
+    transition-duration: 0.25s;
+    appearance: none;
+    border-color: #fff;
+    border-width: 0px;
+    border-style: solid;
+  }
+
+  .suggest:hover {
+    background-color: rgba(0, 0, 0, 0.1);;
+    border-width: 10px;
   }
 </style>

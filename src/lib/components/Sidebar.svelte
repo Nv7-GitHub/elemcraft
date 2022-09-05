@@ -1,5 +1,5 @@
 <script>
-import { inv } from "./data";
+import { inv } from "../data";
 import Element from "./Element.svelte";
 import { scale } from "svelte/transition";
 

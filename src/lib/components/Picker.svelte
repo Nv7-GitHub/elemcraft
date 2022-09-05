@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { picked } from "./data";
+  import { picked } from "../data";
   import Element from "./Element.svelte";
   import { scale } from "svelte/transition";
 

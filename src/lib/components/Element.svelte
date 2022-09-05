@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount, tick } from "svelte";
-  import { server, picked } from "./data";
+  import { server, picked } from "../data";
   import type { Element } from "$lib/servers";
 
   export let id: number;

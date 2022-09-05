@@ -32,3 +32,7 @@ recipe.subscribe(async (v) => {
     inv.set([...$inv, res]);
   }
 })
+
+export async function refresh_inv() {
+  inv.set([...await $server.inventory()]);
+}
