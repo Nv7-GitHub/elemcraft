@@ -1,11 +1,16 @@
 <script lang="ts">
-  import { tick } from "svelte";
-  import { elements, picked } from "./data";
+  import { onMount, tick } from "svelte";
+  import { server, picked } from "./data";
+  import type { Element } from "$lib/servers";
 
   export let id: number;
   export let picker = false;
 
-  let el = elements[id];
+  let el: Element;
+  
+  onMount(async () => {
+    el = await $server.element(id);
+  })
 
   async function pick() {
     if (!picker) {
@@ -15,12 +20,14 @@
     }
   }
 
-  $: el = elements[id];
+  $: $server.element(id).then((v) => {el = v});
 </script>
 
-<div class="element" style:background-color={el.color} on:click={pick}>
+{#if el}
+<div class="element" style:background-color={`#${el.color.toString(16).padStart(6, '0')}`} on:click={pick}>
   {el.name}
 </div>
+{/if}
 
 <style>
   .element {
