@@ -26,13 +26,11 @@ export function make_picked(): number[][] {
 
 recipe.subscribe(async (v) => {
   let res = await $server.combine(v);
-  if (res && !$inv.includes(res)) {
-    $server.found(res);
+  if (res) {
+    if (!$inv.includes(res)) {
+      $server.found(res);
+      inv.set([...$inv, res]);
+    }
     recipe.set(make_picked());
-    inv.set([...$inv, res]);
   }
 })
-
-export async function refresh_inv() {
-  inv.set([...await $server.inventory()]);
-}

@@ -136,10 +136,18 @@ export class LocalServer implements Server {
     this.inv.push(id);
   }
 
-  async suggest(recipe: number[][], res: Element): Promise<void> {
+  async suggest(recipe: number[][], res: Element): Promise<Result> {
     res.id = elements.length;
     elements.push(res);
     recipes.push({ recipe, result: res.id });
-    this.inv.push(res.id);
+    return res.id;
+  }
+
+  async existingSuggestions(recipe: number[][]): Promise<Element[]> {
+    return elements;
+  }
+
+  async creator(): Promise<string> {
+    return "You";
   }
 }

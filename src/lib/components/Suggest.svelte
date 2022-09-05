@@ -1,17 +1,51 @@
 <script lang="ts">
+import { inv, make_picked, recipe, server } from "$lib/data";
+
 import { slide, fade } from "svelte/transition";
+import { onMount } from "svelte";
 import { suggest_open } from "./suggest";
+import type { Element } from "../servers";
+import ElementView from "./ElementView.svelte";
 
 let input: HTMLDivElement;
 
-let color: string = "#ddd";
+let color = "#ddd";
+let description = "";
 
 const MAXLEN = 21;
+
 function checklen(e: Event) {
   if (input.innerText.length >= MAXLEN) {
     e.preventDefault();
     return false;
   }
+}
+
+let loading = false;
+
+let existing: Element[] = [];
+
+onMount(async () => {
+  existing = await $server.existingSuggestions($recipe);
+});
+
+async function suggest() {
+  loading = true;
+  let res = await $server.suggest($recipe, {
+    id: -1,
+    name: input.innerText,
+    description: description,
+    color: parseInt(color.slice(1), 16),
+    creator: await $server.creator(),
+    created: Math.floor(Date.now() / 1000),
+  });
+  if (res) { // If found, save
+    await $server.found(res);
+    recipe.set(make_picked());
+    inv.set([...$inv, res]);
+  }
+  loading = false;
+  suggest_open.set(false);
 }
 </script>
 
@@ -25,7 +59,7 @@ function checklen(e: Event) {
     
     <div class="body">
       <div class="element" style:background-color={color}>
-        <div class="element-input" contenteditable bind:this={input} on:keypress={checklen} on:paste={checklen}></div>
+        <div class="element-input" contenteditable bind:this={input} on:keypress={checklen} on:paste={checklen}>Name</div>
       </div>
 
       <div class="color-input">
@@ -33,7 +67,27 @@ function checklen(e: Event) {
         <input type="color" bind:value={color}/>
       </div>
 
-      <textarea placeholder="Description..." class="description-input"></textarea>
+      <textarea placeholder="Description..." class="description-input" bind:value={description}></textarea>
+    </div>
+
+    <div class="existing-row">
+    <span class="existing-text">Existing Suggestions</span>
+
+      <div class="existing">
+        {#each existing as el}
+        <div class="existing-item" on:click={() => {
+          input.innerText = el.name;
+          color = `#${el.color.toString(16)}`;
+          description = el.description;
+        }}>
+          <ElementView el={el}></ElementView>
+        </div>
+        {/each}
+      </div>
+    </div>
+
+    <div class="bottom">
+      <button class="submit" on:click={suggest} disabled={loading}>Submit</button>
     </div>
   </div>
 {/if}
@@ -101,6 +155,7 @@ function checklen(e: Event) {
     text-align: center !important;
     font-family: Arial, Helvetica, sans-serif;
     padding: 0.25vh;
+    transition-duration: 0.1s;
   }
 
   .element-input {
@@ -125,5 +180,59 @@ function checklen(e: Event) {
   .description-input {
     margin: 2vh;
     font-family: Arial, Helvetica, sans-serif;
+    flex-grow: 1;
+  }
+
+  .bottom {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(0, 0, 0, 0.25);
+    display: flex;
+    justify-content: right;
+    flex-direction: row;
+  }
+  
+  .submit {
+    margin: 1vh;
+    border-radius: 1vh;
+    border-style: solid;
+    height: 7vh;
+    width: 10vw;
+    border-color:rgba(0, 0, 0, 0.25);
+    background-color: #ddd;
+    transition-duration: 0.1s;
+    border-width: 1px;
+  }
+
+  .submit:hover {
+    background-color: #fff;
+    border-width: 5px;
+  }
+
+  .existing {
+    display: flex;
+    flex-direction: row;
+    overflow: scroll;
+    padding-left: 0.5vh;
+    padding-right: 0.5vh;
+  }
+
+  .existing-item {
+    flex-shrink: 0;
+  }
+
+  .existing-row {
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgba(0, 0, 0, 0.25);
+
+    display: flex;
+    flex-direction: column;
+    font-family: Arial, Helvetica, sans-serif;
+    text-align: center;
+  }
+
+  .existing-text {
+    margin: 0.5vh;
   }
 </style>

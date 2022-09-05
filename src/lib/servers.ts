@@ -7,7 +7,7 @@ export interface Element {
   created: number, // Unix timestamp, seconds
 }
 
-export type Result = number | null
+export type Result = number | null;
 
 export interface Server {
   name(): string,
@@ -15,5 +15,7 @@ export interface Server {
   inventory(): Promise<number[]>,
   combine(recipe: number[][]): Promise<Result>,
   found(id: number): Promise<void>, // Add to inventory
-  suggest(recipe: number[][], res: Element): Promise<void>, // TODO: Support returning suggestion
+  suggest(recipe: number[][], res: Element): Promise<Result>,
+  existingSuggestions(recipe: number[][]): Promise<Element[]>,
+  creator(): Promise<string>, // Account name
 }
