@@ -6,7 +6,8 @@ import { connected, ConnectUI } from "./ui";
 
 let $server: Server = new LocalServer();
 export let server: Writable<Server> = writable($server);
-export let inv = writable([...await $server.inventory()]);
+export let inv: Writable<number[]> = writable([]);
+$server.inventory().then((v) => {inv.set([...v])});
 export let picked = writable(-1);
 export let recipe: Writable<number[][]> = writable([[-1]]);
 export let ROWS = writable(5);
