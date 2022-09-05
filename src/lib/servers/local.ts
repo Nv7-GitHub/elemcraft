@@ -144,7 +144,7 @@ export class LocalServer implements Server {
   }
 
   async existingSuggestions(recipe: number[][]): Promise<Element[]> {
-    return elements;
+    return [];
   }
 
   async creator(): Promise<string> {

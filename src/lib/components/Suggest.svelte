@@ -70,9 +70,9 @@ async function suggest() {
       <textarea placeholder="Description..." class="description-input" bind:value={description}></textarea>
     </div>
 
+    {#if existing.length > 0}
     <div class="existing-row">
-    <span class="existing-text">Existing Suggestions</span>
-
+      <span class="existing-text">Existing Suggestions</span>
       <div class="existing">
         {#each existing as el}
         <div class="existing-item" on:click={() => {
@@ -85,6 +85,7 @@ async function suggest() {
         {/each}
       </div>
     </div>
+    {/if}
 
     <div class="bottom">
       <button class="submit" on:click={suggest} disabled={loading}>Submit</button>
