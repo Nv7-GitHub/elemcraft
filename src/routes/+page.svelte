@@ -4,6 +4,7 @@ import Grid from "$lib/components/Grid.svelte";
 import Picker from "$lib/components/Picker.svelte";
 import Sidebar from "$lib/components/Sidebar.svelte";
 import Suggest from "$lib/components/Suggest.svelte";
+import TopBar from "$lib/components/TopBar.svelte";
 import { connected } from "$lib/ui";
 </script>
 
@@ -13,6 +14,7 @@ import { connected } from "$lib/ui";
 <Sidebar></Sidebar>
 <Picker></Picker>
 <Suggest></Suggest>
+<TopBar></TopBar>
 {:else}
 <ConnectUi></ConnectUi>
 {/if}

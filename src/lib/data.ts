@@ -4,10 +4,13 @@ import type { Server } from "./servers";
 import { LocalServer } from "./servers/local";
 import { connected, ConnectUI } from "./ui";
 
-let $server: Server = new LocalServer();
+export let servers: Server[] = [new LocalServer()];
+let $server: Server = servers[0];
+
 export let server: Writable<Server> = writable($server);
 export let inv: Writable<number[]> = writable([]);
 $server.inventory().then((v) => {inv.set([...v])});
+
 export let picked = writable(-1);
 export let recipe: Writable<number[][]> = writable([[-1]]);
 export let ROWS = writable(5);

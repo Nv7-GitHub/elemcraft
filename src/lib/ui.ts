@@ -46,6 +46,7 @@ export class ConnectUI implements UI {
       },
     });
 
+    prompt_result.set(null);
     return new Promise((resolve) => {
       prompt_result.subscribe((v) => {
         if (v) {
