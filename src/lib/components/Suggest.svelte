@@ -39,10 +39,9 @@ async function suggest() {
     creator: await $server.creator(),
     created: Math.floor(Date.now() / 1000),
   });
-  if (res) { // If found, save
-    await $server.found(res);
+  if (res) { // If found, save, refresh
     recipe.set(make_picked());
-    inv.set([...$inv, res]);
+    inv.set([...await $server.inventory()]);
   }
   loading = false;
   suggest_open.set(false);

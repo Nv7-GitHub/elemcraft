@@ -38,7 +38,7 @@ export class DefaultServer implements Server {
   }
 
   name(): string {
-    return this.u!.profile!["name"];
+    return "Default Server";
   }
 
   async element(id: number): Promise<Element> {
@@ -66,17 +66,14 @@ export class DefaultServer implements Server {
   }
 
   suggest(recipe: number[][], res: Element): Promise<Result> {
-    console.log("hi");
     throw new Error("Method not implemented.");
   }
 
   existingSuggestions(recipe: number[][]): Promise<Element[]> {
-    console.log("hi");
     throw new Error("Method not implemented.");
   }
 
-  creator(): Promise<string> {
-    console.log("hi");
-    throw new Error("Method not implemented.");
+  async creator(): Promise<string> {
+    return this.u!.profile!["name"];
   }
 }
