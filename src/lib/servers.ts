@@ -9,9 +9,14 @@ export interface Element {
 
 export type Result = number | null;
 
+export type Input = {
+  placeholder: string,
+  type: string,
+}
+
 export interface UI {
   progress(text: string, progress: number): void, // progress is 0-1
-  prompt(title: string, inputPlaceholders: string[], buttons: string[]): Promise<PromptResult>,
+  prompt(title: string, inputs: Input[], buttons: string[]): Promise<PromptResult>,
 }
 
 export interface PromptResult {
@@ -25,7 +30,6 @@ export interface Server {
   element(id: number): Promise<Element>,
   inventory(): Promise<number[]>,
   combine(recipe: number[][]): Promise<Result>,
-  found(id: number): Promise<void>, // Add to inventory
   suggest(recipe: number[][], res: Element): Promise<Result>,
   existingSuggestions(recipe: number[][]): Promise<Element[]>,
   creator(): Promise<string>, // Account name

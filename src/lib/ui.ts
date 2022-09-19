@@ -1,5 +1,5 @@
 import { writable, type Writable } from "svelte/store";
-import type { PromptResult, UI } from "./servers";
+import type { PromptResult, UI, Input } from "./servers";
 
 export let connected = writable(false);
 export let prompt_result: Writable<PromptResult | null> = writable(null);
@@ -20,13 +20,12 @@ export interface ProgressComponent {
 
 export interface PromptComponent {
   title: string;
-  inputPlaceholders: string[];
+  inputs: Input[];
   buttons: string[];
 }
 
 export class ConnectUI implements UI {
   progress(text: string, progress: number): void {
-    console.log("HI");
     component.set({
       type: 'progress',
       value: {
@@ -36,12 +35,12 @@ export class ConnectUI implements UI {
     });
   }
 
-  prompt(title: string, inputPlaceholders: string[], buttons: string[]): Promise<PromptResult> {
+  prompt(title: string, inputs: Input[], buttons: string[]): Promise<PromptResult> {
     component.set({
       type: 'prompt',
       value: {
         title,
-        inputPlaceholders,
+        inputs,
         buttons,
       },
     });

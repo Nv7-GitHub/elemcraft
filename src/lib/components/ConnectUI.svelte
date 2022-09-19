@@ -1,23 +1,30 @@
 <script lang="ts">
 import { component, prompt_result, type ProgressComponent, type PromptComponent } from "$lib/ui";
+import { tick } from "svelte";
 import { slide } from "svelte/transition";
 
 let progress: ProgressComponent;
 let prompt: PromptComponent;
-let vals: string[];
+let vals: HTMLInputElement[];
 
 component.subscribe((v) => {
   if (v.type == 'progress') {
     progress = v.value as ProgressComponent;
   } else {
     prompt = v.value as PromptComponent;
-    vals = new Array(prompt.inputPlaceholders.length).fill('');
+    vals = new Array(prompt.inputs.length);
+    tick().then(() => {
+      vals.forEach((v, i) => {
+        v.type = prompt.inputs[i].type;
+        v.value = "";
+      });
+    })
   }
 })
 
 function submit(ind: number) {
   prompt_result.set({
-    values: vals,
+    values: vals.map((v) => v.value),
     button: ind,
   });
 }
@@ -39,8 +46,8 @@ function submit(ind: number) {
     </div>
 
     <div class="body">
-      {#each prompt.inputPlaceholders as placeholder, i}
-        <input type="text" placeholder={placeholder} bind:value={vals[i]} class="input"/>
+      {#each prompt.inputs as inp, i}
+        <input placeholder={inp.placeholder} bind:this={vals[i]} class="input"/>
       {/each}
     </div>
 
