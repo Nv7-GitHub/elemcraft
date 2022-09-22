@@ -25,9 +25,11 @@ let loading = false;
 
 let existing: Element[] = [];
 
-onMount(async () => {
-  existing = await $server.existingSuggestions($recipe);
-});
+suggest_open.subscribe(async (v) => {
+  if (v) {
+    existing = await $server.existingSuggestions($recipe);
+  }
+})
 
 async function suggest() {
   loading = true;
@@ -45,6 +47,10 @@ async function suggest() {
   }
   loading = false;
   suggest_open.set(false);
+
+  color = "#ddd";
+  description = "";
+  input.innerText = "";
 }
 </script>
 

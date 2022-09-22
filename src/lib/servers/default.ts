@@ -65,12 +65,25 @@ export class DefaultServer implements Server {
     return res;
   }
 
-  suggest(recipe: number[][], res: Element): Promise<Result> {
-    throw new Error("Method not implemented.");
+  async suggest(recipe: number[][], result: Element): Promise<Result> {
+    let res = await this.client?.send("api/suggest", {
+      method: "POST",
+      body: JSON.stringify({
+        recipe,
+        name: result.name,
+        color: result.color,
+        description: result.description,
+      }),
+    })
+    console.log("res", res);
+    return null;
   }
 
-  existingSuggestions(recipe: number[][]): Promise<Element[]> {
-    throw new Error("Method not implemented.");
+  async existingSuggestions(recipe: number[][]): Promise<Element[]> {
+    return this.client?.send("api/existing", {
+      method: "POST",
+      body: JSON.stringify(recipe),
+    });
   }
 
   async creator(): Promise<string> {
