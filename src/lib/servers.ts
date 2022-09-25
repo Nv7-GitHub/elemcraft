@@ -32,5 +32,6 @@ export interface Server {
   combine(recipe: number[][]): Promise<Result>,
   suggest(recipe: number[][], res: Element): Promise<Result>,
   existingSuggestions(recipe: number[][]): Promise<Element[]>,
+  canSuggest(recipe: number[][]): boolean,
   creator(): Promise<string>, // Account name
 }

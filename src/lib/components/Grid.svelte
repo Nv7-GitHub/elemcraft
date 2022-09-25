@@ -3,8 +3,8 @@
 
   import { cubicOut } from "svelte/easing";
   import { slide } from "svelte/transition";
-  import { COLS, make_picked, recipe, ROWS } from "../data";
-import { suggest_open } from "./suggest";
+  import { COLS, inv, make_picked, recipe, ROWS, server } from "../data";
+  import { suggest_open } from "./suggest";
 
   // slide but horizontal
   function horizontalSlide(node: HTMLElement, { delay = 0, duration = 400, easing: easing$1 = cubicOut } = {}) {
@@ -54,6 +54,23 @@ import { suggest_open } from "./suggest";
       recipe.set($recipe); 
     }
   }
+
+
+  let combResId = -1;
+  recipe.subscribe(async (v) => {
+    let res = await $server.combine(v);
+    if (res) {
+      combResId = res;
+      
+      // Refresh inv
+      if (!$inv.includes(res)) {
+        inv.set([...await $server.inventory()]);
+        recipe.set(make_picked());
+      }
+    } else {
+      combResId = -1;
+    }
+  })
 </script>
 
 <div class="workspace">
@@ -77,7 +94,7 @@ import { suggest_open } from "./suggest";
     <span class="text">Height</span>
     <input type="range" min="2" max="7" step="1" bind:value={$ROWS} on:focus={() => {transition = slide}}/>
   </div>
-  {#if $recipe.some(row => row.some(v => v >= 0))}
+  {#if $server.canSuggest($recipe) && combResId == -1}
     <button class="suggest" in:slide out:slide on:click={() => {suggest_open.set(true)}}>Suggest</button>
   {/if}
 </div>

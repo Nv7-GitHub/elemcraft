@@ -39,17 +39,6 @@ export function make_picked(): number[][] {
   return [...new Array($ROWS)].map(_ => [...new Array($COLS)].map(__ => -1));
 }
 
-recipe.subscribe(async (v) => {
-  let res = await $server.combine(v);
-  if (res) {
-    // Refresh inv
-    if (!$inv.includes(res)) {
-      inv.set([...await $server.inventory()]);
-    }
-    recipe.set(make_picked());
-  }
-})
-
 if (browser) {
   connect();
 }
