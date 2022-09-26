@@ -39,19 +39,26 @@ export class DefaultServer implements Server {
           this.u = (await this.client.users.authViaEmail(res.values[0], res.values[1])).user;
           success = true;
         } else {
+          // Create
           this.u = await this.client.users.create({
             email: res.values[0],
             password: res.values[1], 
             passwordConfirm: res.values[1]
           });
           success = true;
-          console.log(this.u);
-    
+
+          // Login
+          ui.progress("Registering...", 0.25);
+          this.u = (await this.client.users.authViaEmail(res.values[0], res.values[1])).user;
+          
+          // Update
           ui.progress("Registering...", 0.5);
           await this.client.records.update('profiles', this.u!.profile!.id, {
             name: res.values[2], 
             inv: [0, 1, 2, 3],
           })
+
+          // Refresh
           ui.progress("Registering...", 0.75);
           await this.refresh_user();
         }
