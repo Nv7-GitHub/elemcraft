@@ -112,6 +112,9 @@ export class DefaultServer implements Server {
         description: result.description,
       }),
     })
+    if (res) { // Made element
+      await this.refresh_user();
+    }
     return res;
   }
 
