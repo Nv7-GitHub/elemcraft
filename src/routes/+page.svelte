@@ -9,6 +9,10 @@ import { connected } from "$lib/ui";
 </script>
 
 
+<svelte:head>
+  <title>ElemCraft</title>
+</svelte:head>
+
 {#if $connected}
 <Grid></Grid>
 <Sidebar></Sidebar>
