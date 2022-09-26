@@ -11,7 +11,7 @@ export class DefaultServer implements Server {
   }
 
   async connect(ui: UI): Promise<void> {
-    this.client = new PocketBase("http://127.0.0.1:8090/");
+    this.client = new PocketBase("https://elemcraft.nv7haven.com/");
 
     if (this.client.authStore.model) {
       ui.progress("Logging in...", 0);
