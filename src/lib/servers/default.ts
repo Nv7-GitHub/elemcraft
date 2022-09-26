@@ -45,9 +45,10 @@ export class DefaultServer implements Server {
             passwordConfirm: res.values[1]
           });
           success = true;
+          console.log(this.u);
     
           ui.progress("Registering...", 0.5);
-          await this.client.records.update('profiles', this.u!.id, {
+          await this.client.records.update('profiles', this.u!.profile!.id, {
             name: res.values[2], 
             inv: [0, 1, 2, 3],
           })
