@@ -18,7 +18,7 @@ import { scale } from "svelte/transition";
     left: 0;
     top: 0;
     bottom: 0;
-    width: 10vh;
+    width: 14vh;
     background-color: #ffffff;
     overflow-y: scroll;
 
